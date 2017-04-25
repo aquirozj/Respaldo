@@ -39,8 +39,8 @@ public class AgregarPuesto {
     private MapModel advancedModel;
     private OverlaySelectEvent event;
     private Marker marker;
-    private double lat = 15.999;
-    private double lng = 17.111;
+    private double lat;
+    private double lng;
     private int id_puesto;
     private String nombre;
     private String descripcion;
@@ -48,7 +48,7 @@ public class AgregarPuesto {
     private String[] comida_seleccionada;
     private List<Comida> comida;
     private UploadedFile archivo;
-    private String titulo;
+
 
     private PuestoC puestoC;
 
@@ -84,30 +84,6 @@ public class AgregarPuesto {
             System.out.println(latitud + ", " + longitud + ", " + nombre);
             advancedModel.addOverlay(new Marker(new LatLng(latitud, longitud), nombre));
         }
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    
-    
-    public MapModel getAdvancedModel() {
-        return advancedModel;
-    }
-
-    public void setAdvancedModel(MapModel advancedModel) {
-        this.advancedModel = advancedModel;
-    }
-    
-    
-
-    public Marker getMarker() {
-        return marker;
     }
 
     public double getLat() {
@@ -180,30 +156,19 @@ public class AgregarPuesto {
         this.archivo = archivo;
     }
     
-    public void onMarkerSelect(OverlaySelectEvent event) {
-        marker = (Marker) event.getOverlay();
-        System.out.println(marker.getTitle());
-    }
     
-    
-    /**
+   /**
      * Método para registrar un nuevo Puesto
      *
      */
     public void agregar() {
-        //Temporal para lst y long constantes
-        //Realizamos la conexión a la BD
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("YumYum-Ciencias");  //Realiza la conexión a la BD 
-        //Obtenemos el último id de la tabla Pendiente y le sumamos uno para que sea el id del usuario que se esta registrando
-        lat = new PuestoC(emf).getPuestoCount()+ 1;
-        lng = new PuestoC(emf).getPuestoCount()+ 1;
         Puesto p = new Puesto();
         final String dir = System.getProperty("user.dir").replace("\\", "/"); // Directorio de ejecución actual.
         final String sub = "/src/main/webapp/resources"; // Directorio especificado para guardar imagenes.
         final String ext = ".jpg"; // Se define la extensión del archivo.
         
         //Cargar la imagen en la BD
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("YumYum-Ciencias");  //Realiza la conexión a la BD 
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("YumYum-Ciencias");  //Realiza la conexión a la BD 
         if (archivo != null) {
             FacesMessage mensaje = new FacesMessage("Éxito", archivo.getFileName() + " al subir la imagen");
             FacesContext.getCurrentInstance().addMessage(null, mensaje);
@@ -243,5 +208,4 @@ public class AgregarPuesto {
             System.out.println("Error al Agregar Puesto");   
         }
     }
-
 }
